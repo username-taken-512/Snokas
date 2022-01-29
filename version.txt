@@ -1,0 +1,6 @@
+### Snokas 0.1	2022-01-03
+- Snake game created
+- Music and sound effects added
+- Canvas resizing according to browser size
+- Restart feature
+-- Missing features: Highscore tracking, Website layout
