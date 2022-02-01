@@ -30,28 +30,15 @@ let gameStarted = false;
 let snakeSpeed = 100;           // lower means quicker snake
 let stepSize = 10;
 let dX = stepSize;  // Horizontal velocity, start direction 10 to go right
-let dY = 0;   // Vertical velocity
+let dY = 0;         // Vertical velocity
+let score = 0;
 
-const snakeboard = document.getElementById('gameCanvas');
-const snakeboard_ctx = gameCanvas.getContext('2d');
+let mainSection = document.getElementById('mainSection');
+let snakeboard;
+let snakeboardCanvas;
 document.addEventListener('keydown', changeDirection);
-document.getElementById('restart').addEventListener('click', resetGame)
 
-// Make board for larger screen
-// let width = window.innerWidth;
-// console.log('window width: ' + width);
-// console.log('pixelratio: ' + window.devicePixelRatio);
-// snakeboard.style.width = (width - 40) + 'px';
-
-// Fit Snake canvas to screen (Grade 5 req)
-window.addEventListener('resize', resizeCanvas);
-
-function resizeCanvas() {
-  console.log('resize listener width ' + window.innerWidth);
-  console.log('resize listene height ' + window.innerHeight);
-  snakeboard.style.width = (window.innerWidth - 40) + 'px';
-  console.log('new Canvas size: ' + (window.innerWidth - 100));
-}
+drawCanvas(); // Need to create Canvas to initialize snakeboard/snakeboardCanvas
 
 let startX = snakeboard.getAttribute('width') / 2;
 let startY = snakeboard.getAttribute('height') / 2;
@@ -63,13 +50,45 @@ let snake = [
   { x: startX - stepSize * 4, y: startY }
 ];
 
+// Fit Snake canvas to screen (Grade 5 req)
+window.addEventListener('resize', resizeCanvas);
+
+function resizeCanvas() {
+  console.log('resize listener width ' + window.innerWidth);
+  console.log('resize listene height ' + window.innerHeight);
+  snakeboard.style.width = (window.innerWidth - 40) + 'px';
+  console.log('new Canvas size: ' + (window.innerWidth - 100));
+}
+
+function updateScore() {
+  document.getElementById('score').innerHTML = ' 🍎 ' + (++score);
+}
+
+function gameButton() {
+  drawCanvas();
+  resizeCanvas();
+  resetGame();
+}
+
+// Draw Canvas HTML
+function drawCanvas() {
+  mainSection.innerHTML = "";
+
+  let newCanvas = document.createElement('canvas');
+  newCanvas.id = 'gameCanvas';
+  newCanvas.width = 400;
+  newCanvas.height = 400;
+  mainSection.appendChild(newCanvas);
+  snakeboard = document.getElementById('gameCanvas');
+  snakeboardCanvas = gameCanvas.getContext('2d');
+}
 
 // draw a border around the canvas
 function clearCanvas() {
-  snakeboard_ctx.fillStyle = CANVAS_BACKGROUND_COLOR;
-  snakeboard_ctx.strokeStyle = CANVAS_BORDER_COLOR;
-  snakeboard_ctx.fillRect(0, 0, snakeboard.width, snakeboard.height);   // Draw a "filled" rectangle to cover the entire canvas
-  snakeboard_ctx.strokeRect(0, 0, snakeboard.width, snakeboard.height);   // Draw a "border" around the entire canvas
+  snakeboardCanvas.fillStyle = CANVAS_BACKGROUND_COLOR;
+  snakeboardCanvas.strokeStyle = CANVAS_BORDER_COLOR;
+  snakeboardCanvas.fillRect(0, 0, snakeboard.width, snakeboard.height);   // Draw a "filled" rectangle to cover the entire canvas
+  snakeboardCanvas.strokeRect(0, 0, snakeboard.width, snakeboard.height);   // Draw a "border" around the entire canvas
 }
 
 // Draw snake head & snake parts 
@@ -81,33 +100,33 @@ function drawSnake() {
 
 // Draw snake head
 function drawSnakeHead(snakePart) {
-  snakeboard_ctx.fillStyle = SNAKE_COLOR;
-  snakeboard_ctx.strokeStyle = SNAKE_BORDER_COLOR;
-  snakeboard_ctx.fillRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a "filled" rectangle to represent the snake head
-  snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a border around the snake head
+  snakeboardCanvas.fillStyle = SNAKE_COLOR;
+  snakeboardCanvas.strokeStyle = SNAKE_BORDER_COLOR;
+  snakeboardCanvas.fillRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a "filled" rectangle to represent the snake head
+  snakeboardCanvas.strokeRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a border around the snake head
 
   // Draw snake eyes
-  snakeboard_ctx.strokeStyle = SNAKE_EYE_COLOR;
+  snakeboardCanvas.strokeStyle = SNAKE_EYE_COLOR;
   if (dX === 0) { // Going up/down
     if (dY < 0) { // Going up
       // snakeboard_ctx.strokeRect(snakePart.x + 3, snakePart.y + 3, 1, 1);
       // snakeboard_ctx.strokeRect(snakePart.x + 6, snakePart.y + 3, 1, 1);
-      snakeboard_ctx.strokeRect(snakePart.x + stepSize / 3 - 1, snakePart.y + (stepSize / 3), stepSize / 10, stepSize / 10);
-      snakeboard_ctx.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3), stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + stepSize / 3 - 1, snakePart.y + (stepSize / 3), stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3), stepSize / 10, stepSize / 10);
     } else {      // Going down
-      snakeboard_ctx.strokeRect(snakePart.x + stepSize / 3 - 1, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
-      snakeboard_ctx.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + stepSize / 3 - 1, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
     }
   } else {        // Going left/right
     if (dX < 0) { // Going left
-      snakeboard_ctx.strokeRect(snakePart.x + stepSize / 3, snakePart.y + (stepSize / 3) - 1, stepSize / 10, stepSize / 10);
-      snakeboard_ctx.strokeRect(snakePart.x + stepSize / 3, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + stepSize / 3, snakePart.y + (stepSize / 3) - 1, stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + stepSize / 3, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
 
       // snakeboard_ctx.strokeRect(snakePart.x + 3, snakePart.y + 3, 1, 1);
       // snakeboard_ctx.strokeRect(snakePart.x + 3, snakePart.y + 6, 1, 1);
     } else {      // Going right
-      snakeboard_ctx.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3) - 1, stepSize / 10, stepSize / 10);
-      snakeboard_ctx.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3) - 1, stepSize / 10, stepSize / 10);
+      snakeboardCanvas.strokeRect(snakePart.x + (stepSize / 3) * 2, snakePart.y + (stepSize / 3) * 2, stepSize / 10, stepSize / 10);
 
       // snakeboard_ctx.strokeRect(snakePart.x + 6, snakePart.y + 3, 1, 1);
       // snakeboard_ctx.strokeRect(snakePart.x + 6, snakePart.y + 6, 1, 1);
@@ -118,10 +137,10 @@ function drawSnakeHead(snakePart) {
 
 // Draw one snake part
 function drawSnakePart(snakePart) {
-  snakeboard_ctx.fillStyle = SNAKE_COLOR;
-  snakeboard_ctx.strokeStyle = SNAKE_BORDER_COLOR;
-  snakeboard_ctx.fillRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a "filled" rectangle to represent the snake part at the coordinates the part is located
-  snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a border around the snake part
+  snakeboardCanvas.fillStyle = SNAKE_COLOR;
+  snakeboardCanvas.strokeStyle = SNAKE_BORDER_COLOR;
+  snakeboardCanvas.fillRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a "filled" rectangle to represent the snake part at the coordinates the part is located
+  snakeboardCanvas.strokeRect(snakePart.x, snakePart.y, stepSize, stepSize);   // Draw a border around the snake part
 }
 
 // Move snake by adding new head, popping tail (or keeping tail when eating)
@@ -133,6 +152,7 @@ function moveSnake() {
   if (hasEatenFood) {
     playEatSound();
     generateFood();
+    updateScore();
   } else {
     snake.pop();
   }
@@ -211,7 +231,7 @@ function drawFood() {
 
   let drawing = new Image();
   drawing.src = '/img/apple.png';
-  snakeboard_ctx.drawImage(drawing, foodX, foodY, stepSize, stepSize);
+  snakeboardCanvas.drawImage(drawing, foodX, foodY, stepSize, stepSize);
 }
 
 // End game conditions
@@ -229,6 +249,19 @@ function hasGameEnded() {
   const hitBottomWall = snake[0].y > snakeboard.height - stepSize;
 
   return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
+}
+
+function toggleSound() {
+  // let soundSwitch = document.getElementById('soundSwitch').checked;
+  // console.log(soundSwitch.checked);
+
+  if (!document.getElementById('soundSwitch').checked) {
+    gameMusic.pause();
+    soundEnabled = false;
+  } else {
+    gameMusic.play();
+    soundEnabled = true;
+  }
 }
 
 function playEatSound() {
@@ -264,6 +297,8 @@ function resetGame() {
   foodX;   // Food location horizontal
   foodY;   // Food location vertical
   changingDirection = false;
+  score = -1;
+  updateScore();
 
   if (!gameStarted) {
     main();
@@ -275,6 +310,7 @@ function main() {
   if (hasGameEnded()) {
     playDeadSound();
     gameStarted = false;
+    newHighScore(score);  // Add new highscore, if high enough
     return
   };
 
@@ -290,6 +326,7 @@ function main() {
   }, snakeSpeed)
 }
 
+drawCanvas();
 main();
 generateFood();
 playGameMusic();

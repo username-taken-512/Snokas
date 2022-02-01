@@ -1,27 +1,217 @@
-.gameCanvas {
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+#gameCanvas {
   border: 1px solid black;
   background-color: antiquewhite;
-  max-width: 80vh;
-  /* max-height: 50vh; */
-  /* max-height: 50%; */
-  /* margin: 20px; */
-  
+  max-width: 60vh;
+}
 
-  /*
-   top: 50%;
-        left: 50%;
-  position: absolute;
-  transform: translate(-50%, -80%);
-  */
+#scoreApple {
+  width: 30px;
+  display: inline;
+  margin: 0 0.125em;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+#score {
+  font-size: 30px;
+}
+
+/* TABLE STYLING */
+.styled-table {
+    border-collapse: collapse;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 300px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+/* BUTTONS */
+.button {
+  display: inline-block;
+  padding: 10px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #98006ac9;
+
+  border: none;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+
+
+  background-position: center center;
+  background-size: 100%; 
+  object-fit: contain;
+}
+
+.button:hover {background-color: #98006ae7}
+
+.button:active {
+  background-color: #98006af8;
+  box-shadow: 0 5px #666;
+  transform: translateY(2px);
 }
 
 body {
   display: flex;
-  min-height: 90vh;  /* viewport-height */
-  flex-direction: column;
-  flex: 1;
+  min-height: 100vh;  /* viewport-height */
+  flex-direction: column;  /* Sticky footer */
+  flex: 1;  /* Sticky footer */
+  margin: 0;
 }
 
-section {
-    margin: 0px;
+main {
+  background-position: center center;
+  margin: 0 auto;
+  flex: 1 0 auto; /* Sticky footer */
+}
+
+header {
+  color: whitesmoke;
+  border-bottom: 2px solid black;
+  font-family: 'Bangers', cursive;
+  font-size: x-large;
+  margin: 0;
+  text-align: center;
+  background-color: #009879;
+  text-shadow: 2px 2px #98006ae7;
+}
+
+nav {
+  padding: 10px;
+  margin: 0 auto;
+}
+
+nav .button {
+  font-family: 'Bangers', cursive;
+  /* padding: 0 10px; */
+}
+
+footer {
+  color: whitesmoke;
+  border-top: 2px solid black;
+  text-shadow: 2px 2px black;
+  margin: 0;
+  padding: 0px;
+  text-align: center;
+  background-color: #009879;
+  flex-shrink: 0; /* Sticky footer */
+}
+
+header, footer {
+  background-image: url(/img/bg.jpg);
+  opacity: 0.8;
+}
+
+footer p {
+  font-style: bold;
+}
+
+
+#soundSpan {
+  float: right;
+  margin: 0;
+  padding: 0;
+}
+
+/* SWITCH The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  background-image: url(/img/volume-medium.svg);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #98006ac9;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #98006ac9;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

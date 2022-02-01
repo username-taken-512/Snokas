@@ -6,26 +6,54 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snokas Äventyr</title>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Sweet Alerts -->
   <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-  <header></header>
+  <header>
+    <h1><img src="/favicon-32x32.png"> Snokas Äventyr <img src="/favicon-32x32.png"> </h1>
+  </header>
+
+  <nav>
+    <!-- Which button type is "correct"? -->
+    <!-- <input type="button" class="button active" value="Start Game" id="restart"> -->
+    <button onclick="gameButton()" class="button">Start Game</button>
+    <button onclick="highScoreButton()" class="button">Highscore</button>
+  </nav>
 
   <main>
-    <h1><img src="/favicon-32x32.png"> Snokas Äventyr <img src="/favicon-32x32.png"> </h1>
-    <section width="80%">
-      <canvas id="gameCanvas" class="gameCanvas" width="400" height="400"></canvas>
+
+
+
+    <section width="80%" id="mainSection">
+      <!-- Canvas drawn from js here -->
     </section>
 
-    <!-- Which button type is "correct"? -->
-    <input type="button" class="button" value="Restart" id="restart">
-    <button onclick="resetGame()">Restart2</button>
+    <section width="80%" id="scoreSection">
+      <span>
+        <img src="/img/happysnokright.png" id="scoreApple">
+        <!-- <img src="/img/scoreapple.jpg" id="scoreApple"> -->
+      </span>
+      <span id="score">🍎 0</span>
+
+      <span id="soundSpan">
+        <label class="switch">
+          <input type="checkbox" checked id="soundSwitch" onclick="toggleSound()">
+          <span class="slider round"></span>
+        </label>
+      </span>
+    </section>
   </main>
 
-  <footer></footer>
+  <footer>
+    <p><b>Jonatan Engerdahl</b><br>
+      HKR - Web Development - Assignment 1</p>
+  </footer>
 
   <script src="/snakejs.js"></script>
+  <script src="/highscore.js"></script>
+  <script src="/utils.js"></script>
 </body>
 
 </html>

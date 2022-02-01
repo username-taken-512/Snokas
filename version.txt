@@ -1,3 +1,15 @@
+
+### Snokas 0.2	2022-02-01
+- Website layout created
+- Drawing game page and highscore page with DOM
+- Removed test buttons
+- Sound toggle switch added
+- Score counter added
+- Highscore page added (not stored)
+- Highscore add prompt added
+-- Missing features: Highscore storage
+
+
 ### Snokas 0.1	2022-01-03
 - Snake game created
 - Music and sound effects added
