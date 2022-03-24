@@ -1,29 +1,30 @@
 const HIGHSCORE_SIZE = 10;
 
-// Sample highscore data
+// Highscore starting data with famous Snokas master to beat
 let highscores = [
-  { name: 'Anja', score: 40 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 20 },
-  { name: 'Orvar', score: 1 },
-  { name: 'Plucke', score: 29 }
+  { name: 'Anjakonda Snokas Master', score: 40 },
+  { name: 'Ninja turtle', score: 30 },
+  { name: 'Jedi knight', score: 20 },
+  { name: 'Padawan', score: 10 }
 ];
 
-function newHighScore(score) {
+function getHighscoreFromStorage() {
+  if (localStorage.getItem('snokasHighscore') !== null) {
+    highscores = JSON.parse(localStorage.getItem('snokasHighscore') || '[]');
+  }
+}
+
+function saveHighscoreToStorage() {
+  localStorage.setItem('snokasHighscore', JSON.stringify(highscores));
+}
+
+function newHighscore(score) {
   highscores.sort((a, b) => parseInt(b.score) - parseInt(a.score)); // Sort descending
   if (score < 1) { return };
-
-  console.log('SCORE ' + score + ' Prev: ' + highscores[highscores.length - 1].score);
 
   if (highscores.length < HIGHSCORE_SIZE) {
     swalPrompt(score);
   } else if (score > highscores[highscores.length - 1].score) {
-    console.log('UUUUH ' + score + ' Prev: ' + highscores[highscores.length - 1].score);
     swalPrompt(score);
   }
 }
@@ -31,8 +32,6 @@ function newHighScore(score) {
 // Prompts for name before adding new highscore
 // From https://sweetalert2.github.io/
 async function swalPrompt(score) {
-  const ipAPI = '//api.ipify.org?format=json'
-
   const { value: name } = await Swal.fire({
     title: 'New Highscore!!',
     input: 'text',
@@ -49,26 +48,28 @@ async function swalPrompt(score) {
   })
 
   if (name) {
-    addHighScore(name, score);
+    addHighscore(name, score);
   }
 }
 
 // Adds highscore
-function addHighScore(name, score) {
+function addHighscore(name, score) {
   let newScore = { name: name, score: score };
   highscores.push(newScore);
-  trimHighScore();
+  trimHighscore();
+  saveHighscoreToStorage();
   highScoreButton();
 }
 
 // Keeps highscore size in check
-function trimHighScore() {
+function trimHighscore() {
   highscores.sort((a, b) => parseInt(b.score) - parseInt(a.score)); // Sort descending
   if (highscores.length > HIGHSCORE_SIZE) { highscores = highscores.slice(0, 10) };
 }
 
 // Highscore Button to create element
-function highScoreButton() {
+async function highScoreButton() {
+  await getHighscoreFromStorage();
   mainSection.innerHTML = "";
 
   let table = document.createElement('table');

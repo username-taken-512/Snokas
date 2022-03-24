@@ -1,3 +1,7 @@
+### Snokas 0.3  2022-03-24 - All grade 3-4-5 complete
+- Added localStorage highscore save/restore
+- Snake now speeds up slightly for every bite
+- Added Swipe movement for mobile (not done)
 
 ### Snokas 0.2	2022-02-01
 - Website layout created
@@ -10,7 +14,7 @@
 -- Missing features: Highscore storage
 
 
-### Snokas 0.1	2022-01-03
+### Snokas 0.1	2022-01-30
 - Snake game created
 - Music and sound effects added
 - Canvas resizing according to browser size
